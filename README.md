@@ -24,3 +24,12 @@
 - 必要套件安裝：
   ```bash
   pip install pandas python-dotenv datasets langchain langchain_openai langchain_community pymupdf
+
+## 🖥️ 使用方式
+1. 放入 PDF 檔案將欲處理的法規 PDF 檔案放入 Question/Context/ 資料夾
+2. ```bash
+   python gendataset.py
+3. 查看結果篩選後的高品質 QA 將輸出至 Question/Generate_QA/，檔名格式：
+   ```bash
+   <原檔名>_QA.xlsx
+
