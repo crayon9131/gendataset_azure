@@ -1,0 +1,45 @@
+from datasets import Dataset
+from ragas import evaluate
+from ragas.metrics import (
+    context_precision,
+    context_recall,
+    answer_relevancy,
+    faithfulness
+)
+import pandas as pd
+import json
+import os
+from dotenv import load_dotenv
+load_dotenv()  # 載入 .env 檔案
+
+from langchain_openai.chat_models import AzureAChatOpenAI
+from langchain_openai.embeddings import AzureOpenAIEmbeddings
+
+# 初始化 Azure OpenAI 模型
+azure_model = AzureChatOpenAI()
+azure_embeddings = AzureOpenAIEmbeddings()
+
+# 批量處理評估
+BATCH_SIZE = 1
+
+def batch_dataset(dataset, batch_size):
+    for i in range(0, len(dataset), batch_size):
+        yield dataset.select(range(i, min(i + batch_size, len(dataset))))
+
+# 用於評估問答質量的函數
+async def evaluate_metrics_in_batches(_dataset):
+    all_results = []
+    for batch in batch_dataset(_dataset, BATCH_SIZE):
+        result = evaluate(
+            batch,
+            metrics=[
+                answer_relevancy,
+                # faithfulness,
+                context_recall,
+                context_precision
+            ],
+            llm=azure_model,  # 使用 OpenAI 模型
+            embeddings=azure_embeddings  # 使用 OpenAI 的 Embeddings
+        )
+        all_results.append(result.to_pandas())
+    return pd.concat(all_results, ignore_index=True)
