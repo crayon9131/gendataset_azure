@@ -26,7 +26,7 @@
   pip install pandas python-dotenv datasets langchain langchain_openai langchain_community pymupdf
 
 ## 🖥️ 使用方式
-1. 放入 PDF 檔案將欲處理的法規 PDF 檔案放入 Question/Context/ 資料夾
+1. 放入 PDF 檔案將欲處理的法規 PDF 檔案放入 Question/Context/ (資料夾需自己創立可自行命名)
 2. 執行程式
    ```bash
    python gendataset.py
